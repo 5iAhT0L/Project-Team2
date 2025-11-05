@@ -1,17 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CountryCard({ country }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-gray-900 text-white rounded-2xl p-5 shadow-lg hover:scale-105 transition-all">
+    <div
+      onClick={() => navigate(`/country/${country.name.common}`)}
+      className="bg-gray-800 rounded-lg p-4 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-blue-500/20"
+    >
       <img
-        src={country.flags?.png}
+        src={country.flags.svg}
         alt={country.name.common}
-        className="w-full h-40 object-cover rounded-lg mb-3"
+        className="w-100% h-100% object-cover rounded-md mb-3"
       />
-      <h2 className="text-xl font-semibold mb-2">{country.name.common}</h2>
-      <p className="text-gray-400">Region: {country.region}</p>
-      <p className="text-gray-400">Capital: {country.capital?.[0]}</p>
-      <p className="text-gray-400">Population: {country.population.toLocaleString()}</p>
+      <h2 className="text-xl font-semibold">{country.name.common}</h2>
+      <p className="text-gray-400 text-sm">Capital: {country.capital?.[0]}</p>
+      <p className="text-gray-400 text-sm">Population: {country.population.toLocaleString()}</p>
     </div>
   );
 }
