@@ -31,7 +31,7 @@ export default function SearchBar({ query, setQuery }) {
         placeholder="Search country..."
         className={`bg-transparent outline-none border-none transition-all duration-300
           ${theme === "dark" ? "text-gray-200 placeholder-gray-400" : "text-gray-700 placeholder-gray-500"}
-          ${isExpanded ? "w-48 opacity-100" : "w-0 opacity-0"}
+          
         `}
       />
     </div>
