@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import CountryCard from "../components/CountryCard";
 import SearchBar from "../components/SearchBar";
 import Sidebar from "../components/SideBar";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Dashboard() {
   const [countries, setCountries] = useState([]);
   const [query, setQuery] = useState("");
   const [sortAlphabetically, setSortAlphabetically] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     fetch("http://localhost:5000/api/countries")
