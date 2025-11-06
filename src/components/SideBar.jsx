@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FiHome, FiSettings, FiInfo } from "react-icons/fi";
+
+import { useTheme } from "../context/ThemeContext";
 
 export default function Sidebar({
   sortAlphabetically,
@@ -7,6 +9,7 @@ export default function Sidebar({
   setActivePage, // ✅ tambahan prop untuk berpindah halaman
 }) {
   const [showSettings, setShowSettings] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <>
@@ -58,10 +61,16 @@ export default function Sidebar({
           {/* Theme */}
           <div>
             <p className="text-sm text-gray-400 mb-2">Theme</p>
-            <button className="w-full p-2 bg-gray-700 rounded hover:bg-gray-600">
+            <button
+              className="w-full p-2 bg-gray-700 rounded hover:bg-gray-600"
+              onClick={() => toggleTheme("dark")}
+            >
               Dark Mode 🌙
             </button>
-            <button className="w-full p-2 bg-gray-700 rounded hover:bg-gray-600 mt-2">
+            <button
+              className="w-full p-2 bg-gray-700 rounded hover:bg-gray-600 mt-2"
+              onClick={() => toggleTheme("light")}
+            >
               Light Mode ☀️
             </button>
           </div>
