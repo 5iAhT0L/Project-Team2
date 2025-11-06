@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { FiHome, FiSettings, FiInfo } from "react-icons/fi";
 
-export default function Sidebar({ sortAlphabetically, setSortAlphabetically }) {
+export default function Sidebar({
+  sortAlphabetically,
+  setSortAlphabetically,
+  setActivePage, // ✅ tambahan prop untuk berpindah halaman
+}) {
   const [showSettings, setShowSettings] = useState(false);
 
   return (
@@ -11,29 +15,38 @@ export default function Sidebar({ sortAlphabetically, setSortAlphabetically }) {
         <h2 className="hidden md:block text-2xl font-bold mb-4">🌍 Country</h2>
 
         <nav className="flex flex-col gap-4 w-full">
-          <button className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-lg w-full">
+          {/* Dashboard Button */}
+          <button
+            onClick={() => setActivePage("dashboard")}
+            className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-lg w-full transition-all duration-200"
+          >
             <FiHome className="text-xl" />
             <span className="hidden md:inline">Dashboard</span>
           </button>
 
+          {/* Settings Button */}
           <button
             onClick={() => setShowSettings((prev) => !prev)}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full transition-all duration-300 ${
-              showSettings ? "" : "hover:bg-gray-700"
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full transition-all duration-200 ${
+              showSettings ? "bg-gray-700" : "hover:bg-gray-700"
             }`}
           >
             <FiSettings className="text-xl" />
             <span className="hidden md:inline">Settings</span>
           </button>
 
-          <button className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-lg w-full">
+          {/* About Button */}
+          <button
+            onClick={() => setActivePage("about")}
+            className="flex items-center gap-3 hover:bg-gray-700 px-3 py-2 rounded-lg w-full transition-all duration-200"
+          >
             <FiInfo className="text-xl" />
             <span className="hidden md:inline">About</span>
           </button>
         </nav>
       </div>
 
-      {/* Settings Panel */}
+      {/* Settings Panel (slide kanan) */}
       <div
         className={`fixed top-0 right-0 h-full w-72 bg-gray-800 text-white p-6 shadow-2xl z-50 transform transition-transform duration-300 ${
           showSettings ? "translate-x-0" : "translate-x-full"
@@ -68,6 +81,14 @@ export default function Sidebar({ sortAlphabetically, setSortAlphabetically }) {
             </button>
           </div>
         </div>
+
+        {/* Close Button */}
+        <button
+          onClick={() => setShowSettings(false)}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white text-lg"
+        >
+          ✕
+        </button>
       </div>
     </>
   );
