@@ -35,7 +35,11 @@ export default function About() {
           >
             Country Info Explorer
           </p>
-          <h1 className={` ${isDark ? "text-gray-100" : "text-gray-200"}text-5xl md:text-6xl font-extrabold leading-tight `}>
+          <h1
+            className={` ${
+              isDark ? "text-gray-100" : "text-gray-200"
+            }text-5xl md:text-6xl font-extrabold leading-tight `}
+          >
             Tentang Country Info Explorer
           </h1>
         </div>

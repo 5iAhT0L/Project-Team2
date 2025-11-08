@@ -85,9 +85,9 @@ export default function Sidebar({ sortAlphabetically, setSortAlphabetically }) {
           >
             <FiInfo className="text-lg" />
             <span>About</span>
-          </button>
+          </motion.button>
         </nav>
-      </motion.div>
+      </motion.aside>
 
       {/* Settings Panel */}
       <motion.div
