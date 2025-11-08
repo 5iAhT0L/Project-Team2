@@ -1,24 +1,34 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../context/ThemeContext"; 
+import { useTheme } from "../context/ThemeContext";
 
 export default function CountryCard({ country }) {
   const navigate = useNavigate();
   const { theme } = useTheme();
 
   return (
-    <div
-      onClick={() => navigate(`/country/${country.name.common}`)}
-      className={`${theme === "light" ? "bg-white text-black" : "bg-gray-800 text-white"} rounded-lg p-4 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-blue-500/20`}
+    <article
+      onClick={() => navigate(`/country/${encodeURIComponent(country.name.common)}`)}
+      className={`cursor-pointer rounded-lg overflow-hidden transition-transform duration-200 transform hover:-translate-y-1 ${
+        theme === "light"
+          ? "bg-white text-black"
+          : "bg-gradient-to-b from-gray-800 to-gray-900 text-white"
+      } shadow-sm border ${theme === "light" ? "border-gray-200" : "border-transparent"}`}
     >
-      <img
-        src={country.flags.svg}
-        alt={country.name.common}
-        className="w-100% h-100% object-cover rounded-md mb-3"
-      />
-      <h2 className="text-xl font-semibold">{country.name.common}</h2>
-      <p className="text-gray-400 text-sm">Capital: {country.capital?.[0]}</p>
-      <p className="text-gray-400 text-sm">Population: {country.population.toLocaleString()}</p>
-    </div>
+      <div className="w-full h-44 md:h-56 overflow-hidden bg-gray-200">
+        <img
+          src={country.flags.svg || country.flags.png}
+          alt={country.name.common}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+
+      <div className="p-4">
+        <h2 className="text-lg font-semibold mb-1">{country.name.common}</h2>
+        <p className="text-sm text-gray-400 mb-0">Capital: {country.capital?.[0] || "—"}</p>
+        <p className="text-sm text-gray-400">Population: {country.population?.toLocaleString() || "—"}</p>
+      </div>
+    </article>
   );
 }

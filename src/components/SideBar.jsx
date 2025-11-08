@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiHome, FiSettings, FiInfo, FiMenu, FiX } from "react-icons/fi";
@@ -7,29 +8,29 @@ export default function Sidebar({ sortAlphabetically, setSortAlphabetically }) {
   const [showSettings, setShowSettings] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
   const sidebarBg =
     theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-gray-900";
-  const hoverBg = theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-200";
-  const borderColor =
-    theme === "dark" ? "border-gray-700" : "border-gray-300";
+  const hoverBg = theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-100";
+  const borderColor = theme === "dark" ? "border-gray-700" : "border-gray-200";
 
   return (
     <>
-      {/* Tombol toggle (menu hamburger muncul di kiri saat tertutup) */}
+      {/* Mobile hamburger when closed */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             onClick={() => setIsOpen(true)}
-            className={`fixed top-4 left-4 z-50 p-2 rounded-lg shadow-md ${
+            className={`fixed top-4 left-4 z-50 p-2 rounded-md shadow ${
               theme === "dark"
-                ? "bg-gray-800 text-white hover:bg-gray-700"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-            } transition-all duration-300`}
+                ? "bg-gray-800 text-white"
+                : "bg-white text-gray-900"
+            }`}
           >
             <FiMenu size={20} />
           </motion.button>
@@ -37,116 +38,132 @@ export default function Sidebar({ sortAlphabetically, setSortAlphabetically }) {
       </AnimatePresence>
 
       {/* Sidebar */}
-      <motion.div
-        initial={{ x: -250 }}
-        animate={{ x: isOpen ? 0 : -250 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
-        className={`${sidebarBg} fixed top-0 left-0 h-full w-56 flex flex-col items-start p-4 gap-6 shadow-lg z-40 border-r ${borderColor}`}
+      <motion.aside
+        initial={{ x: -260 }}
+        animate={{ x: isOpen ? 0 : -260 }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className={`${sidebarBg} fixed top-0 left-0 h-full w-56 p-4 shadow-lg z-40 border-r ${borderColor} flex flex-col`}
       >
-        {/* Header sidebar */}
-        <div className="flex items-center justify-between w-full mb-4">
-          <motion.h2
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-2xl font-bold"
-          >
-            🌍 Country
-          </motion.h2>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <span className="text-2xl font-bold">🌍 Country</span>
+            <div className="text-xs text-gray-400">Explorer</div>
+          </div>
 
-          <motion.button
-            whileHover={{ rotate: 90 }}
-            transition={{ type: "spring", stiffness: 300 }}
+          <button
             onClick={() => setIsOpen(false)}
-            className={`p-2 rounded-lg ${
-              theme === "dark"
-                ? "bg-gray-800 text-white hover:bg-gray-700"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            className={`p-1 rounded ${
+              theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-100"
             }`}
+            aria-label="close sidebar"
           >
-            <FiX size={20} />
-          </motion.button>
+            <FiX size={18} />
+          </button>
         </div>
 
-        {/* Menu navigasi */}
-        <nav className="flex flex-col gap-4 w-full">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full transition ${hoverBg}`}
+        <nav className="flex-1 flex flex-col gap-2">
+          <button
+            onClick={() => navigate("/")}
+            className={`flex items-center gap-3 p-2 rounded-md text-sm font-medium ${hoverBg}`}
           >
-            <FiHome className="text-xl" />
+            <FiHome className="text-lg" />
             <span>Dashboard</span>
-          </motion.button>
+          </button>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            onClick={() => setShowSettings((prev) => !prev)}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full transition ${hoverBg}`}
+          <button
+            onClick={() => setShowSettings((s) => !s)}
+            className={`flex items-center gap-3 p-2 rounded-md text-sm font-medium ${hoverBg}`}
           >
-            <FiSettings className="text-xl" />
+            <FiSettings className="text-lg" />
             <span>Settings</span>
-          </motion.button>
+          </button>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full transition ${hoverBg}`}
+          <button
+            onClick={() => navigate("/about")}
+            className={`flex items-center gap-3 p-2 rounded-md text-sm font-medium ${hoverBg}`}
           >
-            <FiInfo className="text-xl" />
+            <FiInfo className="text-lg" />
             <span>About</span>
-          </motion.button>
+          </button>
         </nav>
-      </motion.div>
 
-      {/* Settings Panel */}
+        {/* <div className="mt-auto">
+          <div className="text-xs text-gray-400 mb-2">Appearance</div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => toggleTheme("dark")}
+              className={`flex-1 p-2 rounded-md text-sm ${
+                theme === "dark"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-800"
+              }`}
+            >
+              Dark
+            </button>
+            <button
+              onClick={() => toggleTheme("light")}
+              className={`flex-1 p-2 rounded-md text-sm ${
+                theme === "light"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-800"
+              }`}
+            >
+              Light
+            </button>
+          </div>
+
+          <div className="mt-4">
+            <button
+              onClick={() => setSortAlphabetically((s) => !s)}
+              className={`w-full p-2 rounded-md text-sm mt-2 ${
+                sortAlphabetically
+                  ? "bg-green-600 text-white"
+                  : "bg-gray-100 text-gray-800"
+              }`}
+            >
+              {sortAlphabetically ? "A → Z (Sorted)" : "Sort A → Z"}
+            </button>
+          </div>
+        </div> */}
+      </motion.aside>
+
+      {/* Settings slide panel (right) */}
       <motion.div
         initial={{ x: "100%" }}
         animate={{ x: showSettings ? 0 : "100%" }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
-        className={`fixed top-0 right-0 h-full w-72 ${
-          theme === "dark"
-            ? "bg-gray-800 text-white"
-            : "bg-gray-100 text-gray-900"
-        } p-6 shadow-2xl z-50`}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className={`fixed top-0 right-0 h-full w-72 p-6 z-50 ${
+          theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+        } shadow-2xl`}
       >
-        <h3 className="text-xl font-semibold mb-6">Settings</h3>
-
-        <div className="space-y-6">
+        <h3 className="text-lg font-semibold mb-4">Settings</h3>
+        <div className="space-y-4">
           <div>
-            <p className="text-sm opacity-70 mb-2">Theme</p>
-            <div className="flex flex-col gap-2">
+            <div className="text-xs text-gray-400 mb-2">Theme</div>
+            <div className="flex gap-2">
               <button
-                className={`w-full p-2 rounded transition-all duration-200 ${
-                  theme === "dark"
-                    ? "bg-blue-600 hover:bg-blue-500"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
                 onClick={() => toggleTheme("dark")}
+                className="flex-1 p-2 rounded-md bg-gray-900 text-white"
               >
-                Dark Mode 🌙
+                Dark Mode
               </button>
               <button
-                className={`w-full p-2 rounded transition-all duration-200 ${
-                  theme === "light"
-                    ? "bg-blue-600 hover:bg-blue-500"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
                 onClick={() => toggleTheme("light")}
+                className="flex-1 p-2 rounded-md bg-gray-100"
               >
-                Light Mode ☀️
+                Light Mode
               </button>
             </div>
           </div>
 
           <div>
-            <p className="text-sm opacity-70 mb-2">Sort Countries</p>
+            <div className="text-xs text-gray-400 mb-2">Sort Countries</div>
             <button
-              onClick={() => setSortAlphabetically((prev) => !prev)}
-              className={`w-full p-2 rounded transition-all duration-200 ${
+              onClick={() => setSortAlphabetically((s) => !s)}
+              className={`w-full p-2 rounded-md ${
                 sortAlphabetically
-                  ? "bg-green-600 hover:bg-green-500 text-white"
-                  : theme === "dark"
-                  ? "bg-gray-700 hover:bg-gray-600"
-                  : "bg-gray-300 hover:bg-gray-400"
+                  ? "bg-green-600 text-white"
+                  : "bg-gray-100 text-gray-900"
               }`}
             >
               {sortAlphabetically ? "A → Z (Sorted)" : "Sort A → Z"}
