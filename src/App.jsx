@@ -5,12 +5,11 @@ import CountryDetail from "./pages/CountryDetail";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/country/:name" element={<CountryDetail />} />
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/country/:name" element={<CountryDetail />} />
+        </Routes>
+      </BrowserRouter>
   );
 }

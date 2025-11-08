@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiHome, FiSettings, FiInfo, FiMenu, FiX } from "react-icons/fi";
 import { useTheme } from "../context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar({ sortAlphabetically, setSortAlphabetically }) {
   const [showSettings, setShowSettings] = useState(false);
@@ -78,92 +79,66 @@ export default function Sidebar({ sortAlphabetically, setSortAlphabetically }) {
             <span>Settings</span>
           </button>
 
-          <button
-            onClick={() => navigate("/about")}
-            className={`flex items-center gap-3 p-2 rounded-md text-sm font-medium ${hoverBg}`}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg w-full transition ${hoverBg}`}
           >
             <FiInfo className="text-lg" />
             <span>About</span>
           </button>
         </nav>
+      </motion.div>
 
-        {/* <div className="mt-auto">
-          <div className="text-xs text-gray-400 mb-2">Appearance</div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => toggleTheme("dark")}
-              className={`flex-1 p-2 rounded-md text-sm ${
-                theme === "dark"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-800"
-              }`}
-            >
-              Dark
-            </button>
-            <button
-              onClick={() => toggleTheme("light")}
-              className={`flex-1 p-2 rounded-md text-sm ${
-                theme === "light"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-800"
-              }`}
-            >
-              Light
-            </button>
-          </div>
-
-          <div className="mt-4">
-            <button
-              onClick={() => setSortAlphabetically((s) => !s)}
-              className={`w-full p-2 rounded-md text-sm mt-2 ${
-                sortAlphabetically
-                  ? "bg-green-600 text-white"
-                  : "bg-gray-100 text-gray-800"
-              }`}
-            >
-              {sortAlphabetically ? "A → Z (Sorted)" : "Sort A → Z"}
-            </button>
-          </div>
-        </div> */}
-      </motion.aside>
-
-      {/* Settings slide panel (right) */}
+      {/* Settings Panel */}
       <motion.div
         initial={{ x: "100%" }}
         animate={{ x: showSettings ? 0 : "100%" }}
-        transition={{ duration: 0.35, ease: "easeInOut" }}
-        className={`fixed top-0 right-0 h-full w-72 p-6 z-50 ${
-          theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-        } shadow-2xl`}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+        className={`fixed top-0 right-0 h-full w-72 ${
+          theme === "dark"
+            ? "bg-gray-800 text-white"
+            : "bg-gray-100 text-gray-900"
+        } p-6 shadow-2xl z-50`}
       >
-        <h3 className="text-lg font-semibold mb-4">Settings</h3>
-        <div className="space-y-4">
+        <h3 className="text-xl font-semibold mb-6">Settings</h3>
+
+        <div className="space-y-6">
           <div>
-            <div className="text-xs text-gray-400 mb-2">Theme</div>
-            <div className="flex gap-2">
+            <p className="text-sm opacity-70 mb-2">Theme</p>
+            <div className="flex flex-col gap-2">
               <button
+                className={`w-full p-2 rounded transition-all duration-200 ${
+                  theme === "dark"
+                    ? "bg-blue-600 hover:bg-blue-500"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
                 onClick={() => toggleTheme("dark")}
-                className="flex-1 p-2 rounded-md bg-gray-900 text-white"
               >
-                Dark Mode
+                Dark Mode 🌙
               </button>
               <button
+                className={`w-full p-2 rounded transition-all duration-200 ${
+                  theme === "light"
+                    ? "bg-blue-600 hover:bg-blue-500"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
                 onClick={() => toggleTheme("light")}
-                className="flex-1 p-2 rounded-md bg-gray-100"
               >
-                Light Mode
+                Light Mode ☀️
               </button>
             </div>
           </div>
 
           <div>
-            <div className="text-xs text-gray-400 mb-2">Sort Countries</div>
+            <p className="text-sm opacity-70 mb-2">Sort Countries</p>
             <button
-              onClick={() => setSortAlphabetically((s) => !s)}
-              className={`w-full p-2 rounded-md ${
+              onClick={() => setSortAlphabetically((prev) => !prev)}
+              className={`w-full p-2 rounded transition-all duration-200 ${
                 sortAlphabetically
-                  ? "bg-green-600 text-white"
-                  : "bg-gray-100 text-gray-900"
+                  ? "bg-green-600 hover:bg-green-500 text-white"
+                  : theme === "dark"
+                  ? "bg-gray-700 hover:bg-gray-600"
+                  : "bg-gray-300 hover:bg-gray-400"
               }`}
             >
               {sortAlphabetically ? "A → Z (Sorted)" : "Sort A → Z"}
