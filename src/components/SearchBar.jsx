@@ -1,29 +1,52 @@
-import React from "react";
-import { FiSearch } from "react-icons/fi";
-import { useTheme } from "../context/ThemeContext";
+import { Search } from "lucide-react";
 
 export default function SearchBar({ query, setQuery }) {
-  const { theme } = useTheme();
-
   return (
-    <div
-      className={`w-full max-w-xl flex items-center gap-3 rounded-full px-4 py-2 border shadow-sm transition-all duration-200 ${
-        theme === "dark"
-          ? "bg-gray-800/70 border-gray-700 text-gray-100"
-          : "bg-white border-gray-200 text-gray-900"
-      }`}
-      role="search"
-    >
-      <FiSearch className={`text-lg ${theme === "dark" ? "text-gray-200" : "text-gray-500"}`} />
-      <input
-        type="search"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search countries, e.g. Indonesia"
-        className={`w-full bg-transparent outline-none placeholder-gray-400 text-sm ${
-          theme === "dark" ? "text-gray-100" : "text-gray-800"
-        }`}
-      />
+    <div className="relative w-full flex justify-start">
+
+      {/* DESKTOP MODE */}
+      <div
+        className="
+          hidden md:flex items-center rounded-full border border-white/20
+          bg-white/5 backdrop-blur-sm transition-all duration-300
+          hover:w-96 focus-within:w-96 w-14 overflow-hidden
+        "
+      >
+        <Search className="w-5 h-5 ml-3 text-white/70" />
+
+        <input
+          type="text"
+          placeholder="Search countries, e.g. Indonesia"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="
+            bg-transparent text-white outline-none px-1 mx-2 py-2 w-full
+            placeholder-white/50
+          "
+        />
+      </div>
+
+
+      {/* MOBILE MODE (always expanded input) */}
+      <div
+        className="
+          flex md:hidden items-center rounded-full border border-white/20
+          bg-white/5 backdrop-blur-sm transition-all duration-300
+          w-50 overflow-hidden
+        "
+      >
+        <Search className="w-5 h-5 ml-3 text-white/70" />
+
+        <input
+          autoFocus
+          type="text"
+          placeholder="Search countries..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="bg-transparent text-white outline-none px-3 py-2 w-full placeholder-white/50"
+        />
+      </div>
+
     </div>
   );
 }

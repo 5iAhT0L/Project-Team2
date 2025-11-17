@@ -8,26 +8,28 @@ export default function CountryCard({ country }) {
 
   return (
     <article
-      onClick={() => navigate(`/country/${encodeURIComponent(country.name.common)}`)}
-      className={`cursor-pointer rounded-lg overflow-hidden transition-transform duration-200 transform hover:-translate-y-1 ${
-        theme === "light"
-          ? "bg-white text-black"
-          : "bg-gradient-to-b from-gray-800 to-gray-900 text-white"
-      } shadow-sm border ${theme === "light" ? "border-gray-200" : "border-transparent"}`}
+      onClick={() =>
+        navigate(`/country/${encodeURIComponent(country.name.common)}`)
+      }
+      className={`cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg
+        ${theme === "dark" ? "bg-[#101935] text-[#dbe4f3]" : "bg-white text-gray-900"}
+      `}
     >
-      <div className="w-full h-44 md:h-56 overflow-hidden bg-gray-200">
+      <div className="w-full h-40 overflow-hidden">
         <img
           src={country.flags.svg || country.flags.png}
           alt={country.name.common}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
           loading="lazy"
         />
       </div>
 
       <div className="p-4">
-        <h2 className="text-lg font-semibold mb-1">{country.name.common}</h2>
-        <p className="text-sm text-gray-400 mb-0">Capital: {country.capital?.[0] || "—"}</p>
-        <p className="text-sm text-gray-400">Population: {country.population?.toLocaleString() || "—"}</p>
+        <h2 className="text-lg font-bold mb-1">{country.name.common}</h2>
+        <p className="text-sm opacity-70">Capital: {country.capital?.[0] || "—"}</p>
+        <p className="text-sm opacity-70">
+          Population: {country.population?.toLocaleString() || "—"}
+        </p>
       </div>
     </article>
   );
