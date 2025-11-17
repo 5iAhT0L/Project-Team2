@@ -52,14 +52,6 @@ export default function Sidebar({ sortAlphabetically, setSortAlphabetically }) {
             <FiSettings className="text-lg" />
             <span>Settings</span>
           </button>
-
-          <button
-            onClick={() => navigate("/about")}
-            className={`flex items-center gap-3 p-2 rounded-md text-sm font-medium ${hoverBg}`}
-          >
-            <FiInfo className="text-lg" />
-            <span>About</span>
-          </button>
         </nav>
       </aside>
 
