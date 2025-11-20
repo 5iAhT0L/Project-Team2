@@ -7,13 +7,29 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 export default function CountryDetail() {
   const { name } = useParams();
   const [country, setCountry] = useState(null);
+  const [history, setHistory] = useState("");
   const { theme } = useTheme();
 
+  // Fetch country data
   useEffect(() => {
     fetch(`https://restcountries.com/v3.1/name/${name}?fullText=true`)
       .then((res) => res.json())
       .then((data) => setCountry(data[0]));
   }, [name]);
+
+  // Fetch Wikipedia summary
+  useEffect(() => {
+    if (!country) return;
+
+    fetch(
+      `https://en.wikipedia.org/api/rest_v1/page/summary/${country.name.common}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.extract) setHistory(data.extract);
+        else setHistory("No historical information available.");
+      });
+  }, [country]);
 
   if (!country)
     return (
@@ -25,10 +41,6 @@ export default function CountryDetail() {
         Loading...
       </p>
     );
-
-  const lat = country.latlng?.[0];
-  const lng = country.latlng?.[1];
-  const mapImage = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lng}&zoom=4&size=600x400&maptype=mapnik`;
 
   return (
     <div
@@ -50,66 +62,53 @@ export default function CountryDetail() {
         <p className="text-lg">Back to Dashboard</p>
       </Link>
 
+      {/* Main Card (Informasi + Sejarah Menyatu) */}
       <div
-        className={`max-w-3xl mx-auto p-6 rounded-xl shadow-lg transition-all duration-300 ${
+        className={`max-w-4xl mx-auto p-8 rounded-xl shadow-lg transition-all duration-300 ${
           theme === "dark"
             ? "bg-gray-900 shadow-gray-800"
             : "bg-white shadow-gray-300"
         }`}
       >
-        <div className="flex flex-col md:flex-row gap-6 items-center">
+        {/* Informasi Negara */}
+        <div className="flex flex-col md:flex-row gap-6 items-center pb-6 border-b border-gray-600/30">
           <img
             src={country.flags?.png}
             alt={country.name.common}
             className="w-40 rounded shadow-md"
           />
           <div>
-            <h1 className="text-3xl font-bold mb-2">{country.name.common}</h1>
-            <p
-              className={`mb-1 ${
-                theme === "dark" ? "text-gray-300" : "text-gray-700"
-              }`}
-            >
+            <h1 className="text-4xl font-bold mb-2">{country.name.common}</h1>
+            <p className="mb-1">
               <span className="font-semibold">Region:</span> {country.region}
             </p>
-            <p
-              className={`mb-1 ${
-                theme === "dark" ? "text-gray-300" : "text-gray-700"
-              }`}
-            >
+            <p className="mb-1">
               <span className="font-semibold">Capital:</span>{" "}
               {country.capital?.[0] || "N/A"}
             </p>
-            <p
-              className={`mb-1 ${
-                theme === "dark" ? "text-gray-300" : "text-gray-700"
-              }`}
-            >
+            <p className="mb-1">
               <span className="font-semibold">Population:</span>{" "}
               {country.population.toLocaleString()}
             </p>
-            <p
-              className={`mb-1 ${
-                theme === "dark" ? "text-gray-300" : "text-gray-700"
-              }`}
-            >
+            <p className="mb-1">
               <span className="font-semibold">Independent:</span>{" "}
               {country.independent ? "Yes" : "No"}
             </p>
           </div>
         </div>
 
-        <div className="mt-6 text-center">
-          <h2 className="text-2xl font-semibold mb-4">Territorial Map</h2>
-          <img
-            src={mapImage}
-            alt={`Map of ${country.name.common}`}
-            className={`w-full h-80 object-cover rounded-lg border-2 shadow-md transition-all duration-300 ${
-              theme === "dark"
-                ? "border-gray-700 shadow-gray-800"
-                : "border-gray-300 shadow-gray-200"
+        {/* Sejarah */}
+        <div className="mt-6">
+          <h2 className="text-3xl font-semibold mb-4">
+            Sejarah {country.name.common}
+          </h2>
+          <p
+            className={`leading-8 text-lg ${
+              theme === "dark" ? "text-gray-300" : "text-gray-700"
             }`}
-          />
+          >
+            {history}
+          </p>
         </div>
       </div>
     </div>
